@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<title>BEZYVA</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  color: black;
+  margin: 0;
+  min-height: 100vh;
+  transition: 0.3s;
+
+  background:
+    radial-gradient(ellipse at 15% 18%, white 0 25px, transparent 26px),
+    radial-gradient(ellipse at 21% 18%, white 0 35px, transparent 36px),
+    radial-gradient(ellipse at 27% 18%, white 0 25px, transparent 26px),
+
+    radial-gradient(ellipse at 65% 12%, white 0 25px, transparent 26px),
+    radial-gradient(ellipse at 71% 12%, white 0 35px, transparent 36px),
+    radial-gradient(ellipse at 77% 12%, white 0 25px, transparent 26px),
+
+    linear-gradient(
+      to bottom,
+      #75cfff 0%,
+      #b9eaff 60%,
+      #78c850 60%,
+      #4da83d 100%
+    );
+}
+
+.dark-mode {
+  background: #121212;
+}
+
+.dynamic-text {
+  color: black;
+  transition: color 0.3s;
+}
+
+.dark-mode .dynamic-text {
+  color: white;
+}
+
+a.dynamic-link {
+  text-decoration: underline;
+  font-weight: normal;
+}
+
+a.dynamic-button {
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.dark-mode a.dynamic-button {
+  color: white;
+  background-color: #388E3C;
+}
+
+a.dynamic-button:hover {
+  background-color: #F44336;
+  transform: translateY(-3px);
+}
+
+a.dynamic-button:active {
+  transform: translateY(0);
+}
+
+button {
+  padding: 10px 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+.virsus {
+  margin-left: 5mm;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  border: 3mm solid;
+
+  border-image: linear-gradient(
+    45deg,
+    red,
+    orange,
+    yellow,
+    lime,
+    cyan,
+    blue,
+    violet,
+    red
+  ) 1;
+
+  filter: blur(2px);
+  animation: rainbowMove 3s linear infinite;
+}
+
+@keyframes rainbowMove {
+  0% {
+    filter: hue-rotate(0deg) blur(2px);
+  }
+
+  100% {
+    filter: hue-rotate(360deg) blur(2px);
+  }
+}
+
+#laikas {
+  margin-left: 0;
+}
+
+#c {
+  display: block;
+  margin: 20px 0 0 0;
+  border: 3px solid black;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+#tekstas {
+  display: block;
+  width: fit-content;
+  margin: 10px 0 30px 3mm;
+  padding: 10px 18px;
+  border: 3px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="virsus">
+
+<a href="https://www.youtube.com"
+   target="_blank"
+   rel="noopener noreferrer">
+  <button type="button">Go to YouTube</button>
+</a>
+
+<labas href="https://www.google.com/" target="_blank">
+  <p><button>hi</button></p>
+</labas>
+
+<p></p>
+
+<a href="https://www.youtube.com/">Link to Youtube</a>
+
+<p></p>
+
+<a href="https://www.youtube.com/"
+   class="dynamic-text dynamic-link"
+   target="_blank">
+  Link to Youtube
+</a>
+
+<p></p>
+
+<a href="https://dienynas.tamo.lt/Darbai/NamuDarbai"
+   target="_blank"
+   class="dynamic-text dynamic-button">
+  VEIKIAMASIS MYGTUKAS I TAMO
+</a>
+
+<p></p>
+
+<button onclick="toggleDarkMode()">Keisti režimą</button>
+
+<p id="laikas"></p>
+
+</div>
+
+<script>
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+}
+
+setInterval(function() {
+  let dabar = new Date();
+
+  document.getElementById("laikas").innerText =
+    dabar.toLocaleTimeString();
+}, 1000);
+</script>
+
+<canvas id="c" width="800" height="200" tabindex="0"></canvas>
+
+<script>
+let x = 50,
+    y = 150,
+    vy = 0,
+    j = 0,
+    o = {x: 800},
+    go = 0;
+
+const c = document.getElementById("c");
+const ctx = c.getContext("2d");
+
+c.focus();
+
+c.onkeydown = e => {
+
+  if (e.code == "Space") {
+
+    if (go) {
+      y = 150;
+      vy = 0;
+      o.x = 800;
+      go = 0;
+      loop();
+    }
+
+    else if (!j) {
+      vy = -10;
+      j = 1;
+    }
+  }
+};
+
+function loop() {
+
+  ctx.clearRect(0, 0, 800, 200);
+
+  y += vy;
+  vy += 0.6;
+
+  if (y > 150) {
+    y = 150;
+    j = 0;
+  }
+
+  ctx.fillRect(x, y, 30, 30);
+  ctx.strokeRect(x, y, 30, 30);
+
+  o.x -= 5;
+
+  if (o.x < -20)
+    o.x = 800;
+
+  ctx.fillRect(o.x, 150, 20, 30);
+  ctx.strokeRect(o.x, 150, 20, 30);
+
+  if (
+    x < o.x + 20 &&
+    x + 30 > o.x &&
+    y < 180 &&
+    y + 30 > 150
+  ) {
+    go = 1;
+  }
+
+  if (go) {
+    ctx.fillText("Game Over", 350, 90);
+    ctx.fillText("SPACE = restart", 320, 120);
+    return;
+  }
+
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+<h1 id="tekstas">Spausk mane!</h1>
+
+<script>
+const tekstas = document.getElementById("tekstas");
+
+tekstas.onclick = () => {
+  document.body.style.background =
+    "#" + Math.floor(Math.random() * 16777216)
+    .toString(16)
+    .padStart(6, "0");
+};
+
+tekstas.ondblclick = () => {
+  document.body.style.background = "";
+};
+</script>
+
+</body>
+</html>
